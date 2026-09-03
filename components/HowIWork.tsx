@@ -167,6 +167,7 @@ export default function HowIWork() {
        ========================================= */
 
     function sizeCup() {
+      if (!stepsWrap) return;
       const processHeight =
         stepsWrap.getBoundingClientRect().height;
 
