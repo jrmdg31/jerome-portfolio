@@ -1,0 +1,154 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: 0 0% 100%;
+  --foreground: 222.2 84% 4.9%;
+
+  --card: 0 0% 100%;
+  --card-foreground: 222.2 84% 4.9%;
+
+  --popover: 0 0% 100%;
+  --popover-foreground: 222.2 84% 4.9%;
+
+  --primary: 222.2 47.4% 11.2%;
+  --primary-foreground: 210 40% 98%;
+
+  --secondary: 210 40% 96.1%;
+  --secondary-foreground: 222.2 47.4% 11.2%;
+
+  --muted: 210 40% 96.1%;
+  --muted-foreground: 215.4 16.3% 46.9%;
+
+  --accent: 210 40% 96.1%;
+  --accent-foreground: 222.2 47.4% 11.2%;
+
+  --destructive: 0 84.2% 60.2%;
+  --destructive-foreground: 210 40% 98%;
+
+  --border: 214.3 31.8% 91.4%;
+  --input: 214.3 31.8% 91.4%;
+  --ring: 222.2 84% 4.9%;
+
+  --radius: 0.5rem;
+
+  /* Coffee theme variables */
+  --coffee-dark: #0B0705;
+  --coffee-darker: #120C0A;
+  --coffee-cream: #F5EDE1;
+  --coffee-lighter-cream: #FAF3E8;
+  --coffee-accent: #C9975A;
+  --coffee-darker-accent: #B8834A;
+  --coffee-deep: #3B2417;
+}
+
+.dark {
+  --background: 222.2 84% 4.9%;
+  --foreground: 210 40% 98%;
+
+  --card: 222.2 84% 4.9%;
+  --card-foreground: 210 40% 98%;
+
+  --popover: 222.2 84% 4.9%;
+  --popover-foreground: 210 40% 98%;
+
+  --primary: 210 40% 98%;
+  --primary-foreground: 222.2 47.4% 11.2%;
+
+  --secondary: 217.2 32.6% 17.5%;
+  --secondary-foreground: 210 40% 98%;
+
+  --muted: 217.2 32.6% 17.5%;
+  --muted-foreground: 215 20.2% 65.1%;
+
+  --accent: 217.2 32.6% 17.5%;
+  --accent-foreground: 210 40% 98%;
+
+  --destructive: 0 62.8% 30.6%;
+  --destructive-foreground: 210 40% 98%;
+
+  --border: 217.2 32.6% 17.5%;
+  --input: 217.2 32.6% 17.5%;
+  --ring: 212.7 26.8% 83.9%;
+}
+
+/* Coffee theme overrides for dark mode */
+.dark {
+  --background: 15 29% 5%; /* hsl equivalent of #120C0A */
+  --foreground: 60 10% 98%; /* hsl equivalent of #FAF3E8 */
+
+  --card: 20 27% 7%; /* hsl equivalent of #0B0705 */
+  --card-foreground: 60 10% 98%; /* hsl equivalent of #FAF3E8 */
+
+  --popover: 20 27% 7%; /* hsl equivalent of #0B0705 */
+  --popover-foreground: 60 10% 98%; /* hsl equivalent of #FAF3E8 */
+
+  --primary: 35 46% 62%; /* hsl equivalent of #C9975A */
+  --primary-foreground: 60 10% 98%; /* hsl equivalent of #FAF3E8 */
+
+  --secondary: 20 27% 7%; /* hsl equivalent of #0B0705 */
+  --secondary-foreground: 60 10% 98%; /* hsl equivalent of #FAF3E8 */
+
+  --muted: 20 27% 7%; /* hsl equivalent of #0B0705 */
+  --muted-foreground: 60 10% 98%; /* hsl equivalent of #F5EDE1 */
+
+  --accent: 35 46% 62%; /* hsl equivalent of #C9975A */
+  --accent-foreground: 60 10% 98%; /* hsl equivalent of #FAF3E8 */
+
+  --destructive: 0 84% 60%; /* hsl equivalent of #ff2a2a */
+  --destructive-foreground: 0 0% 100%; /* hsl equivalent of #ffffff */
+
+  --border: 20 27% 7%; /* hsl equivalent of #0B0705 */
+  --input: 20 27% 7%; /* hsl equivalent of #0B0705 */
+  --ring: 60 10% 98%; /* hsl equivalent of #F5EDE1 */
+}
+
+/* Custom cursor styles */
+* {
+  cursor: none;
+}
+
+.cursor-dot {
+  position: fixed;
+  width: 4px;
+  height: 4px;
+  background-color: var(--coffee-accent);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  transition: transform 0.1s ease-out;
+}
+
+.cursor-pill {
+  position: fixed;
+  height: 8px;
+  background-color: var(--coffee-accent);
+  border-radius: 4px;
+  pointer-events: none;
+  z-index: 9999;
+  transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1), transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.cursor-label {
+  position: fixed;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--coffee-lighter-cream);
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+@media (hover: none) {
+  .cursor-dot,
+  .cursor-pill,
+  .cursor-label {
+    display: none;
+  }
+
+  * {
+    cursor: default;
+  }
+}
