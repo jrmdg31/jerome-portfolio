@@ -116,34 +116,73 @@ export default function HowIWork() {
     useRef<SVGGElement>(null);
 
   useEffect(() => {
-    const section =
+    /*
+      Capture the refs once.
+
+      TypeScript does not reliably preserve null
+      narrowing for these values inside nested
+      functions, so explicit non-null aliases are
+      created after the guard.
+    */
+
+    const sectionNode =
       sectionRef.current;
 
-    const stepsWrap =
+    const stepsWrapNode =
       stepsWrapRef.current;
 
-    const cupSvg =
+    const cupSvgNode =
       cupSvgRef.current;
 
-    const liquid =
+    const liquidNode =
       liquidRef.current;
 
-    const surfaceLine =
+    const surfaceLineNode =
       surfaceLineRef.current;
 
-    const steamGroup =
+    const steamGroupNode =
       steamGroupRef.current;
 
+    /*
+      All required DOM elements must exist
+      before the animation system starts.
+    */
+
     if (
-      !section ||
-      !stepsWrap ||
-      !cupSvg ||
-      !liquid ||
-      !surfaceLine ||
-      !steamGroup
+      !sectionNode ||
+      !stepsWrapNode ||
+      !cupSvgNode ||
+      !liquidNode ||
+      !surfaceLineNode ||
+      !steamGroupNode
     ) {
       return;
     }
+
+    /*
+      Explicitly typed non-null references.
+
+      These eliminate TS18047 errors inside
+      nested animation functions.
+    */
+
+    const section: HTMLElement =
+      sectionNode;
+
+    const stepsWrap: HTMLDivElement =
+      stepsWrapNode;
+
+    const cupSvg: SVGSVGElement =
+      cupSvgNode;
+
+    const liquid: SVGRectElement =
+      liquidNode;
+
+    const surfaceLine: SVGLineElement =
+      surfaceLineNode;
+
+    const steamGroup: SVGGElement =
+      steamGroupNode;
 
     let targetProgress = 0;
     let currentProgress = 0;
@@ -206,22 +245,19 @@ export default function HowIWork() {
        0 = beginning
        1 = end
 
-       The IMPORTANT part:
-
-       The DOM is visually:
+       DOM order:
 
        04 Optimize
        03 Build & execute
        02 Mapping
        01 Discovery
 
-       Therefore we reveal the DOM
-       backwards:
+       Reveal order:
 
-       index 3 → first
-       index 2 → second
-       index 1 → third
-       index 0 → last
+       Discovery
+       Mapping
+       Build & execute
+       Optimize
        ========================================= */
 
     function computeProgress() {
@@ -301,12 +337,7 @@ export default function HowIWork() {
       /* =====================================
          COFFEE
 
-         Always fills:
-
-         BOTTOM → TOP
-
-         This happens simultaneously
-         with the process reveal.
+         Bottom → Top
          ===================================== */
 
       const liquidHeight =
@@ -339,11 +370,6 @@ export default function HowIWork() {
 
       /* =====================================
          PROCESS REVEALS
-
-         Discovery is physically at the
-         bottom, so it appears first.
-
-         Then:
 
          Discovery
          ↓
@@ -395,10 +421,9 @@ export default function HowIWork() {
       /* =====================================
          STEAM
 
-         Steam begins once Discovery
-         starts appearing.
+         Steam begins with Discovery.
 
-         Discovery is index 3.
+         Discovery = index 3
          ===================================== */
 
       steamGroup.style.opacity =
@@ -432,6 +457,10 @@ export default function HowIWork() {
       computeProgress();
     }
 
+    /* =========================================
+       EVENT LISTENERS
+       ========================================= */
+
     window.addEventListener(
       'scroll',
       onScroll,
@@ -443,11 +472,19 @@ export default function HowIWork() {
       onResize
     );
 
+    /* =========================================
+       INITIALIZE
+       ========================================= */
+
     sizeCup();
     computeProgress();
 
     rafId =
       requestAnimationFrame(tick);
+
+    /* =========================================
+       CLEANUP
+       ========================================= */
 
     return () => {
       window.removeEventListener(
@@ -483,7 +520,6 @@ export default function HowIWork() {
         <h2 className="how-i-work__title">
           How I work
         </h2>
-
 
         {/* ===================================
             MAIN WORK AREA
@@ -522,7 +558,6 @@ export default function HowIWork() {
                     {step.number}
                   </div>
 
-
                   {/* CONTENT */}
 
                   <div className="how-i-work__step-body">
@@ -546,7 +581,6 @@ export default function HowIWork() {
             )}
 
           </div>
-
 
           {/* =================================
               COFFEE CUP
@@ -580,7 +614,6 @@ export default function HowIWork() {
                 </clipPath>
 
               </defs>
-
 
               {/* =================================
                   STEAM
@@ -634,7 +667,6 @@ export default function HowIWork() {
 
               </g>
 
-
               {/* =================================
                   CUP LID
                   ================================= */}
@@ -672,7 +704,6 @@ export default function HowIWork() {
                 stroke="var(--cream)"
                 strokeWidth="1.5"
               />
-
 
               {/* =================================
                   COFFEE
@@ -714,7 +745,6 @@ export default function HowIWork() {
 
               </g>
 
-
               {/* =================================
                   CUP BODY
                   ================================= */}
@@ -732,7 +762,6 @@ export default function HowIWork() {
                 strokeWidth="1.5"
                 strokeLinejoin="round"
               />
-
 
               {/* =================================
                   CUP HORIZONTAL BANDS
@@ -771,7 +800,6 @@ export default function HowIWork() {
                 strokeWidth="1"
               />
 
-
               {/* =================================
                   EDITORIAL SIDE DETAIL
                   ================================= */}
@@ -800,7 +828,6 @@ export default function HowIWork() {
                 strokeOpacity="0.18"
               />
 
-
               {/* =================================
                   SMALL GRAPHIC MARKS
                   ================================= */}
@@ -821,8 +848,9 @@ export default function HowIWork() {
                 opacity="0.2"
               />
 
-
-              {/* MEASUREMENT TICKS */}
+              {/* =================================
+                  MEASUREMENT TICKS
+                  ================================= */}
 
               <path
                 d="M117 181 L120 181"
@@ -838,8 +866,9 @@ export default function HowIWork() {
                 strokeOpacity="0.2"
               />
 
-
-              {/* SIDE REGISTRATION MARK */}
+              {/* =================================
+                  SIDE REGISTRATION MARK
+                  ================================= */}
 
               <path
                 d="
@@ -850,7 +879,6 @@ export default function HowIWork() {
                 strokeWidth="0.7"
                 strokeOpacity="0.25"
               />
-
 
               {/* =================================
                   BOTTOM RIM
@@ -865,7 +893,6 @@ export default function HowIWork() {
                 stroke="var(--cream)"
                 strokeWidth="1.5"
               />
-
 
               {/* =================================
                   GROUNDING LINE
@@ -888,7 +915,6 @@ export default function HowIWork() {
         </div>
 
       </div>
-
 
       <style jsx>{`
 
@@ -915,7 +941,6 @@ export default function HowIWork() {
 
           position: relative;
         }
-
 
         /* =========================================
            STICKY STAGE
@@ -945,7 +970,6 @@ export default function HowIWork() {
           overflow: visible;
         }
 
-
         /* =========================================
            TITLE
            ========================================= */
@@ -969,7 +993,6 @@ export default function HowIWork() {
 
           text-align: center;
         }
-
 
         /* =========================================
            MAIN LAYOUT
@@ -997,19 +1020,8 @@ export default function HowIWork() {
           flex: 0 0 auto;
         }
 
-
         /* =========================================
            PROCESS LIST
-
-           Visual order:
-
-           04 Optimize
-           03 Build & execute
-           02 Mapping
-           01 Discovery
-
-           This is intentional because the
-           animation runs bottom → top.
            ========================================= */
 
         .how-i-work__steps {
@@ -1025,7 +1037,6 @@ export default function HowIWork() {
 
           min-width: 0;
         }
-
 
         /* =========================================
            TIMELINE
@@ -1054,7 +1065,6 @@ export default function HowIWork() {
           z-index: 0;
         }
 
-
         /* =========================================
            PROCESS ITEM
            ========================================= */
@@ -1078,7 +1088,6 @@ export default function HowIWork() {
 
           z-index: 2;
         }
-
 
         /* =========================================
            PROCESS NUMBER
@@ -1118,7 +1127,6 @@ export default function HowIWork() {
           letter-spacing: 0.04em;
         }
 
-
         /* =========================================
            STEP BODY
            ========================================= */
@@ -1130,7 +1138,6 @@ export default function HowIWork() {
 
           min-width: 0;
         }
-
 
         .how-i-work__step-label {
           margin-bottom: 5px;
@@ -1147,7 +1154,6 @@ export default function HowIWork() {
           letter-spacing: 0.14em;
         }
 
-
         .how-i-work__step-body h3 {
           margin: 0 0 7px;
 
@@ -1162,7 +1168,6 @@ export default function HowIWork() {
           letter-spacing: -0.01em;
         }
 
-
         .how-i-work__step-body p {
           margin: 0;
 
@@ -1174,7 +1179,6 @@ export default function HowIWork() {
 
           line-height: 1.5;
         }
-
 
         /* =========================================
            CUP COLUMN
@@ -1193,7 +1197,6 @@ export default function HowIWork() {
 
           overflow: visible;
         }
-
 
         /* =========================================
            CUP
@@ -1218,7 +1221,6 @@ export default function HowIWork() {
           will-change: auto;
         }
 
-
         /* =========================================
            STEAM
 
@@ -1239,16 +1241,13 @@ export default function HowIWork() {
             opacity;
         }
 
-
         .how-i-work__steam.s2 {
           animation-delay: 0.8s;
         }
 
-
         .how-i-work__steam.s3 {
           animation-delay: 1.6s;
         }
-
 
         /* =========================================
            STEAM MOTION
@@ -1311,7 +1310,6 @@ export default function HowIWork() {
           }
         }
 
-
         /* =========================================
            MOBILE
            ========================================= */
@@ -1322,19 +1320,16 @@ export default function HowIWork() {
             min-height: 280vh;
           }
 
-
           .how-i-work__sticky {
             padding:
               30px 24px;
           }
-
 
           .how-i-work__title {
             margin-bottom: 38px;
 
             font-size: 38px;
           }
-
 
           .how-i-work__layout {
             width: 100%;
@@ -1350,11 +1345,9 @@ export default function HowIWork() {
             gap: 18px;
           }
 
-
           .how-i-work__step {
             gap: 12px;
           }
-
 
           .how-i-work__num {
             width: 30px;
@@ -1364,28 +1357,22 @@ export default function HowIWork() {
             font-size: 10px;
           }
 
-
           .how-i-work__timeline {
             left: 14px;
           }
-
 
           .how-i-work__step-body h3 {
             font-size: 16px;
           }
 
-
           .how-i-work__step-body p {
             font-size: 12px;
           }
 
-
           .how-i-work__step-label {
             font-size: 8px;
           }
-
         }
-
 
         /* =========================================
            REDUCED MOTION
@@ -1396,7 +1383,6 @@ export default function HowIWork() {
           .how-i-work__steam {
             animation: none;
           }
-
         }
 
       `}</style>
