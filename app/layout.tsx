@@ -1,6 +1,7 @@
 import './globals.css';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
+import { Analytics } from '@vercel/analytics/next';
 import CursorProvider from '@/components/CursorProvider';
 
 const inter = Inter({ subsets: ['latin'] });
@@ -26,6 +27,7 @@ export default function RootLayout({
       <body className={`${inter.className} dark`} data-theme="dark">
         {/* Cursor effects client component */}
         <CursorProvider>{children}</CursorProvider>
+        <Analytics />
       </body>
     </html>
   );
